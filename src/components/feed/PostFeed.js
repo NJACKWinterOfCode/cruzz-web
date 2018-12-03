@@ -132,20 +132,18 @@ class PostFeed extends Component {
 
   handleDateTime(date) {
     const d = new Date(date);
-    var createdDate = d.toDateString();
-    const timeLocal = d.toLocaleTimeString();
+    const createdDate = d.toDateString();
     const de = new Date();
-    const todayLocaltime = de.toLocaleTimeString();
     const todayDate = de.toDateString();
     if (todayDate === createdDate) {
       if (d.getHours() > 12) {
-        return d.getHours() - 12 + " " + "PM";
+        return `${d.getHours() - 12} PM`;
       } else {
-        return d.getHours() + " " + "AM";
+        return `${d.getHours()} AM`;
       }
     }
-    var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    var tDate = d.getDay() + " " + month[d.getMonth()];
+    const month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const tDate = d.getDay() + " " + month[d.getMonth()];
     return tDate;
   }
 
