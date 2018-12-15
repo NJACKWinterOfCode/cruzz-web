@@ -137,6 +137,9 @@ class PostDetails extends Component {
           ):(
             <div>
               <img alt="loading" className="uk-align-center" src={spinner}></img>
+              <div>
+                <h3>No Post For You Till Now !</h3>
+              </div>
             </div>
           )
         }
