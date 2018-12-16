@@ -7,6 +7,7 @@ import logo from '../static/img/index.svg';
 import { loading, loaded } from './../actions/authActions';
 import axios from 'axios';
 import PostFeed from './feed/PostFeed';
+import {Link} from "react-router-dom";
 
 
 class App extends Component {
@@ -75,10 +76,19 @@ class App extends Component {
         </div>
         {
           !this.props.auth.loading && this.state.posts.length === 0? (
-            <div className="uk-align-center">
+            <div className="uk-align-center uk-text-center">
+              <img src="https://www.dailydot.com/wp-content/uploads/e52/31/87610fa1a0ae891d.png" alt="No Feed Pic"  height="300px" width="300px"/>
               <h2 className="uk-text-center">
-                You don't have any posts in your feed, yet.
+                Start Creating One
               </h2>
+              <div id="border">
+                {
+                  this.props.auth.authenticated ? (
+                    <Link className="ov-color-black" to="/new/post" data-uk-icon="icon: plus; ratio: 1.2" data-uk-tooltip="title: Create a new post; pos: bottom-center"></Link>
+                  ):
+                  null
+                }
+              </div>
             </div>
           ): null
         }
