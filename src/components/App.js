@@ -7,7 +7,8 @@ import logo from '../static/img/index.svg';
 import { loading, loaded } from './../actions/authActions';
 import axios from 'axios';
 import PostFeed from './feed/PostFeed';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import noFeedImg from '../static/img/no-feeds.png';
 
 
 class App extends Component {
@@ -26,14 +27,14 @@ class App extends Component {
 
   fetchPosts() {
     axios.get('https://cruzz.herokuapp.com/api/post/feed/?&limit=100&offset=0/')
-    .then(res => {
-      this.setState({
-        posts: res.data.posts.reverse()
+      .then(res => {
+        this.setState({
+          posts: res.data.posts.reverse()
+        });
+        console.log(res.data.posts)
+      }).catch(err => {
+        console.log(err.response);
       });
-      console.log(res.data.posts)
-    }).catch(err => {
-      console.log(err.response);
-    });
   }
 
   render() {
@@ -53,31 +54,34 @@ class App extends Component {
         </div>
         <div data-uk-grid="true">
           <div className="uk-width-4-5@m uk-align-center">
-          {
-            this.state.posts.length > 0 ? (
-              <div>
-                {this.state.posts.map((post, key) => {
-                  return (
-                    <div key={key} data-uk-scrollspy="cls: uk-animation-slide-bottom-medium; target: > div; delay: 40;">
-                      <PostFeed post={post} full={false}/>
-                    </div>
-                  )
-                })}
-              </div>
-            ):(
-              <div>
+            {
+              this.state.posts.length > 0 ? (
                 <div>
-                  <img alt="#" className="uk-align-center" src={spinner}></img>
+                  {this.state.posts.map((post, key) => {
+                    return (
+                      <div key={key} data-uk-scrollspy="cls: uk-animation-slide-bottom-medium; target: > div; delay: 40;">
+                        <PostFeed post={post} full={false} />
+                      </div>
+                    )
+                  })}
                 </div>
-              </div>
-            )
-          }
+              ) : (
+                  <div>
+                    <div>
+                      <img alt="#" className="uk-align-center" src={spinner}></img>
+                    </div>
+                  </div>
+                )
+            }
           </div>
         </div>
         {
-          !this.props.auth.loading && this.state.posts.length === 0? (
+          !this.props.auth.loading && this.state.posts.length === 0 ? (
             <div className="uk-align-center uk-text-center">
-              <img src="https://www.dailydot.com/wp-content/uploads/e52/31/87610fa1a0ae891d.png" alt="No Feed Pic"  height="300px" width="300px"/>
+              <h2 class="uk-text-center">
+                You have no Posts !
+            </h2>
+              <img src={noFeedImg} alt="No Feed Pic" height="200px" width="200px" />
               <h2 className="uk-text-center">
                 Start Creating One
               </h2>
@@ -85,12 +89,12 @@ class App extends Component {
                 {
                   this.props.auth.authenticated ? (
                     <Link className="ov-color-black" to="/new/post" data-uk-icon="icon: plus; ratio: 1.2" data-uk-tooltip="title: Create a new post; pos: bottom-center"></Link>
-                  ):
-                  null
+                  ) :
+                    null
                 }
               </div>
             </div>
-          ): null
+          ) : null
         }
       </div>
     );
@@ -101,4 +105,4 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, {loading, loaded})(withRouter(App));
+export default connect(mapStateToProps, { loading, loaded })(withRouter(App));
